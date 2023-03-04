@@ -25,7 +25,7 @@ class tanggapanController extends Controller
                 'id_petugas' => Auth::guard('admin')->user()->id_petugas,
             ]);
 
-            return redirect('/admin/pengaduan/detail/{$pengaduan}', ['pengaduan' => $pengaduan, 'tanggapan' => $tanggapan])->with(['status' => 'Berhasil Dikirim!']);
+            return redirect()->route('admin.pengaduan', ['pengaduan' => $pengaduan, 'tanggapan' => $tanggapan])->with(['status' => 'Berhasil Dikirim!']);
         } else {
             $pengaduan->update(['status' => $request->status]);
 
@@ -36,7 +36,7 @@ class tanggapanController extends Controller
                 'id_petugas' => Auth::guard('admin')->user()->id_petugas,
             ]);
 
-            return redirect('/admin/pengaduan/detail/{$pengaduan}', ['pengaduan' => $pengaduan, 'tanggapan' => $tanggapan])->with(['status' => 'Berhasil Dikirim!']);
+            return redirect()->route('admin.pengaduan', ['pengaduan' => $pengaduan, 'tanggapan' => $tanggapan])->with(['status' => 'Berhasil Dikirim!']);
         }
     }
 

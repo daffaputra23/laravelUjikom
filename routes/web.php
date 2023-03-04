@@ -5,6 +5,7 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\user\userController;
 use App\Http\Controllers\admin\petugasController;
 use App\Http\Controllers\admin\dashboardController;
+use App\Http\Controllers\admin\laporanController;
 use App\Http\Controllers\admin\pengaduanController;
 use App\Http\Controllers\admin\masyarakatController;
 use App\Http\Controllers\admin\tanggapanController;
@@ -112,10 +113,14 @@ Route::get('/profile/{siapa?}', [userController::class, 'pengaduan'])->name('pro
 // routes untuk kirim pengaduan
 
 
+// routes lihat pengaduan dan kirim tanggapan
 Route::get('/admin/pengaduan', [pengaduanController::class, 'index'])->name('admin.pengaduan');
 Route::get('/admin/pengaduan/detail/{id_pengaduan}', [pengaduanController::class, 'detail'])->name('admin.pengaduan.detail');
-Route::get('/admin/pengaduan/detail', [tanggapanController::class, 'detail'])->name('admin.pengaduan.detail.balas');
-
 Route::post('/admin/pengaduan/tanggapan', [tanggapanController::class, 'tanggapan'])->name('admin.pengaduan.tanggapan');
+// routes lihat pengaduan dan kirim tanggapan
 
+
+// routes untuk cari laporan dan print laporan
+Route::post('/admin/laporan/cari', [laporanController::class, 'cariLaporan'])->name('admin.laporan');
+Route::get('/admin/laporan/print/{from}/{to}', [laporanController::class, 'print'])->name('admin.laporan.print');
 
