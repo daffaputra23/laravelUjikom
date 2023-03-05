@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\masyarakat::create([
             'nik' => '2303265464',
             'nama' => 'keisha',
-            'email' => 'keisha@gmail.com',
+            'email' => 'kei@gmail.com',
             'username' => 'username',
             'password' => Hash::make('keisha')
         ]);

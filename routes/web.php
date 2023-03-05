@@ -41,10 +41,10 @@ Route::get('/register', function () {
 //     return view('user.sendProfile.pesan');
 // });
 
-Route::get('/profile/pengaduan', function () {
-    return view('user.sendProfile.pengaduan');
-});
-// route untuk send and profile
+// Route::get('/profile/pengaduan', function () {
+//     return view('user.sendProfile.pengaduan');
+// });
+// // route untuk send and profile
 
 
 Route::get('/adminLogin', function () {
@@ -108,9 +108,10 @@ Route::get('/search', [adminController::class, 'search'])->name('search');
 // admin login auth
 
 // routes untuk kirim pengaduan 
+Route::get('/profile/pengaduan', [userController::class, 'formPengaduan'])->name('profile.pengaduan');
 Route::post('/profile/kirimPengaduan', [userController::class, 'kirimPengaduan'])->name('profile.kirimPengaduan');
-Route::get('/profile/{siapa?}', [userController::class, 'pengaduan'])->name('profile.pengaduan');
-Route::get('/profile', [userController::class, 'pengaduan'])->name('profile.pengaduan');
+Route::get('/profile/{siapa?}', [userController::class, 'pengaduan'])->name('profile.pengaduan.me');
+Route::get('/profile', [userController::class, 'pengaduan'])->name('profile.pengaduan.all');
 
 // routes untuk kirim pengaduan
 
@@ -125,4 +126,3 @@ Route::post('/admin/pengaduan/tanggapan', [tanggapanController::class, 'tanggapa
 // routes untuk cari laporan dan print laporan
 Route::post('/admin/laporan/cari', [laporanController::class, 'cariLaporan'])->name('admin.laporan');
 Route::get('/admin/laporan/print/{from}/{to}', [laporanController::class, 'print'])->name('admin.laporan.print');
-

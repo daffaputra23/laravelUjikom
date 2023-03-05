@@ -19,6 +19,33 @@ class userController extends Controller
         return view('user.auth.register');
     }
 
+    
+    public function formPengaduan()
+    {
+                // Membuat variable $terverifikasi isinya menghitung pengaduan status pending
+        $terverifikasi = pengaduan::where([['nik', Auth::guard('masyarakat')->user()->nik], ['status', '!=', '0']])->get()->count();
+        // Membuat variable $terverifikasi isinya menghitung pengaduan status proses
+        $proses = pengaduan::where([['nik', Auth::guard('masyarakat')->user()->nik], ['status', 'proses']])->get()->count();
+        // Membuat variable $terverifikasi isinya menghitung pengaduan status selesai
+        $selesai = pengaduan::where([['nik', Auth::guard('masyarakat')->user()->nik], ['status', 'selesai']])->get()->count();
+
+        $all = pengaduan::where([['nik', Auth::guard('masyarakat')->user()->nik]])->count();
+
+        $finish = pengaduan::where('status', 'selesai')->get()->count();
+
+
+
+        // Masukkan 3 variable diatas ke dalam variable array $hitung
+        $hitung = [$terverifikasi, $proses, $selesai, $all, $finish];
+
+        // Arahkan ke file user/register.blade.php
+        return view('user.sendProfile.pengaduan', ['hitung' => $hitung]);
+    }
+
+
+
+    
+ 
     public function register(Request $request)
     {
         // Masukkan semua data yg dikirim ke variable $data 
@@ -61,6 +88,7 @@ class userController extends Controller
             'nama' => $data['nama'],
             'email' => $data['email'],
             'username' => $data['username'],
+            'foto' => $data['foto'] ?? '',
             'password' => Hash::make($data['password']),
         ]);
 
@@ -185,7 +213,7 @@ class userController extends Controller
         // Pengecekan variable $pengaduan
         if ($pengaduan) {
             // Jika mengirim pengaduan berhasil
-            return redirect()->route('profile.pengaduan', 'me')->with(['pengaduan' => 'Berhasil terkirim!', 'type' => 'success']);
+            return redirect()->route('profile.pengaduan.me', 'me')->with(['pengaduan' => 'Berhasil terkirim!', 'type' => 'success']);
         } else {
             // Jika mengirim pengaduan gagal
             return redirect()->back()->with(['pengaduan' => 'Gagal terkirim!', 'type' => 'danger']);
@@ -219,7 +247,7 @@ class userController extends Controller
             return view('user.sendProfile.pesan', ['pengaduan' => $pengaduan, 'hitung' => $hitung, 'siapa' => $siapa]);
         } else {
             // Jika $siapa kosong
-            $pengaduan = pengaduan::where([['nik', '!=', Auth::guard('masyarakat')->user()->nik], ['status', '!=', '0']])->orderBy('tgl_pengaduan', 'desc')->get();
+            $pengaduan = pengaduan::where([['nik', '!=', Auth::guard('masyarakat')->user()->nik], ['status', '!=', '0']])->get();
 
             // Arahkan ke file user/laporan.blade.php sebari kirim data pengaduan, hitung, siapa
             return view('user.sendProfile.pesan', ['pengaduan' => $pengaduan, 'hitung' => $hitung, 'siapa' => $siapa, 'all'=> $all]);
