@@ -110,6 +110,8 @@ Route::get('/search', [adminController::class, 'search'])->name('search');
 // routes untuk kirim pengaduan 
 Route::post('/profile/kirimPengaduan', [userController::class, 'kirimPengaduan'])->name('profile.kirimPengaduan');
 Route::get('/profile/{siapa?}', [userController::class, 'pengaduan'])->name('profile.pengaduan');
+Route::get('/profile', [userController::class, 'pengaduan'])->name('profile.pengaduan');
+
 // routes untuk kirim pengaduan
 
 

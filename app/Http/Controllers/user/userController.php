@@ -200,9 +200,15 @@ class userController extends Controller
         $proses = pengaduan::where([['nik', Auth::guard('masyarakat')->user()->nik], ['status', 'proses']])->get()->count();
         // Membuat variable $terverifikasi isinya menghitung pengaduan status selesai
         $selesai = pengaduan::where([['nik', Auth::guard('masyarakat')->user()->nik], ['status', 'selesai']])->get()->count();
+       
+        $all = pengaduan::where([['nik', Auth::guard('masyarakat')->user()->nik]])->count();
+       
+        $finish = pengaduan::where('status', 'selesai')->get()->count();
+
+
 
         // Masukkan 3 variable diatas ke dalam variable array $hitung
-        $hitung = [$terverifikasi, $proses, $selesai];
+        $hitung = [$terverifikasi, $proses, $selesai, $all, $finish];
 
         // Pengecekan jika ada parameter $siapa yang dikirimkan di url
         if ($siapa == 'me') {
@@ -216,7 +222,7 @@ class userController extends Controller
             $pengaduan = pengaduan::where([['nik', '!=', Auth::guard('masyarakat')->user()->nik], ['status', '!=', '0']])->orderBy('tgl_pengaduan', 'desc')->get();
 
             // Arahkan ke file user/laporan.blade.php sebari kirim data pengaduan, hitung, siapa
-            return view('user.sendProfile.pesan', ['pengaduan' => $pengaduan, 'hitung' => $hitung, 'siapa' => $siapa]);
+            return view('user.sendProfile.pesan', ['pengaduan' => $pengaduan, 'hitung' => $hitung, 'siapa' => $siapa, 'all'=> $all]);
         }
     }
 
