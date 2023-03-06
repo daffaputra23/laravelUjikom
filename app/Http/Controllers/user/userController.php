@@ -9,6 +9,7 @@ use App\Models\pengaduan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\File;
 
 class userController extends Controller
 {
@@ -65,6 +66,7 @@ class userController extends Controller
         if ($validate->fails()) {
             return redirect()->back()->withErrors($validate)->withInput();
         }
+
 
         // // Mengecek email
         $email = masyarakat::where('email', $request->username)->first();
@@ -174,6 +176,7 @@ class userController extends Controller
 
         // Masukkan semua data yg dikirim ke variable $data 
         $data = $request->all();
+        // dd($request->file('foto'));
 
         // Buat variable $validate kemudian isinya Validator::make(datanya, [nama_field => peraturannya])
         $validate = Validator::make($data, [
@@ -189,10 +192,17 @@ class userController extends Controller
             return redirect()->back()->withErrors($validate)->withInput();
         }
 
-        // Pengecekan jika ada file foto yang dikirim
+        
         // if ($request->file('foto')) {
-        //     $data['foto'] = $request->file('foto')->store('assets/pengaduan', 'public');
+        //     $data['foto'] = $request->file('foto')->store('image/gambar', 'public');
         // }
+        // $image_path = $request->file('foto')->store('image', 'public');
+        
+
+        // Pengecekan jika ada file foto yang dikirim
+        if ($request->file('foto')) {
+            $data['foto'] = $request->file('foto')->store('assets/pengaduan', 'public');
+        }
 
         // Set timezone waktu ke Asia/Bangkok
         date_default_timezone_set('Asia/Bangkok');
@@ -206,7 +216,7 @@ class userController extends Controller
             'tgl_kejadian' => $data['tgl_kejadian'],
             'lokasi_kejadian' => $data['lokasi_kejadian'],
             'kategori_kejadian' => $data['kategori_kejadian'],
-            // 'foto' => $data['foto'] ?? '',
+            'foto' => $data['foto'] ?? '',
             'status' => '0',
         ]);
 

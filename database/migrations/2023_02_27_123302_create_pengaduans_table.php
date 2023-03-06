@@ -22,7 +22,7 @@ return new class extends Migration
             $table->dateTime('tgl_kejadian');
             $table->text('lokasi_kejadian');
             $table->enum('kategori_kejadian', ['agama', 'hukum', 'lingkungan', 'sosial']);
-            // $table->string('foto');
+            $table->string('foto');
             $table->enum('status', ['0', 'proses', 'selesai']);
 
             $table->timestamps();
